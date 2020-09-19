@@ -50,6 +50,10 @@ namespace SampleProject.WebApi.Controllers
         [HttpGet("city")]
         public WeatherForecast GetForCity([FromRoute] string city)
         {
+
+
+
+
             var weatherInformation = Database.GetWeatherInformation();
 
             return GetForCity(weatherInformation, city);
