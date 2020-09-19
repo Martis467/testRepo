@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -24,16 +22,51 @@ namespace SampleProject.WebApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public WeatherForecast Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+
+            return new WeatherForecast
             {
-                Date = DateTime.Now.AddDays(index),
+                City = "Vilnius",
+                Date = DateTime.Now,
                 TemperatureC = rng.Next(-20, 55),
                 Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            };
+        }
+
+        // My to-be code changes are down here:
+
+        // This is commented out because I'll adjust the get function
+        //[HttpGet]
+        //public WeatherForecast Get()
+        //{
+        //    var weatherInformation = Database.GetWeatherInformation();
+
+        //    return GetForCity(weatherInformation, "Vilnius");
+
+        //}
+
+        [HttpGet("city")]
+        public WeatherForecast GetForCity([FromRoute] string city)
+        {
+            var weatherInformation = Database.GetWeatherInformation();
+
+            return GetForCity(weatherInformation, city);
+        }
+
+        // Function that could be replaced with a simple where condition
+        private WeatherForecast GetForCity(IEnumerable<WeatherForecast> weatherInformation, string city)
+        {
+            foreach(var w in weatherInformation)
+            {
+                if (w.City.Equals(city))
+                {
+                    return w;
+                }
+            }
+
+            return null;
         }
     }
 }
