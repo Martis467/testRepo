@@ -53,6 +53,10 @@ namespace SampleProject.WebApi.Controllers
             var weatherInformation = Database.GetWeatherInformation();
 
             return GetForCity(weatherInformation, city);
+
+
+
+
         }
 
         // Function that could be replaced with a simple where condition
