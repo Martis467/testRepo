@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 
 namespace SampleProject.WebApi.Controllers
 {
+    using System.Linq;
+
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -23,15 +25,9 @@ namespace SampleProject.WebApi.Controllers
         [HttpGet]
         public WeatherForecast Get()
         {
-            var rng = new Random();
+            var weatherForecast = Database.GetWeatherInformation().FirstOrDefault();
 
-            return new WeatherForecast
-            {
-                City = "Vilnius",
-                Date = DateTime.Now,
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            };
+            return weatherForecast;
         }
     }
 }
