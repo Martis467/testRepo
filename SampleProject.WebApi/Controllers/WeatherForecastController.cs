@@ -29,5 +29,24 @@ namespace SampleProject.WebApi.Controllers
 
             return weatherForecast;
         }
+
+        [HttpGet("city")]
+        public WeatherForecast GetForCity([FromRoute] string city)
+        {
+            var weatherInformation = Database.GetWeatherInformation();
+            return GetForCity(weatherInformation, city);
+        }
+
+        private WeatherForecast GetForCity(IEnumerable<WeatherForecast> weatherInformation, string city)
+        {
+            foreach (var w in weatherInformation)
+            {
+                if (w.City.Equals(city))
+                {
+                    return w;
+                }
+            }
+            return null;
+        }
     }
 }
