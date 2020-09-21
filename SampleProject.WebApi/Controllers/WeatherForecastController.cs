@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace SampleProject.WebApi.Controllers
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     [ApiController]
@@ -28,6 +29,25 @@ namespace SampleProject.WebApi.Controllers
             var weatherForecast = Database.GetWeatherInformation().FirstOrDefault();
 
             return weatherForecast;
+        }
+
+        [HttpGet("city")]
+        public WeatherForecast GetForCity([FromRoute] string city)
+        {
+            var weatherInformation = Database.GetWeatherInformation();
+            return weatherInformation.FirstOrDefault(x => x.City.Equals(city));
+        }
+
+        private WeatherForecast GetForCity(IEnumerable<WeatherForecast> weatherInformation, string city)
+        {
+            foreach (var w in weatherInformation)
+            {
+                if (w.City.Equals(city))
+                {
+                    return w;
+                }
+            }
+            return null;
         }
     }
 }
